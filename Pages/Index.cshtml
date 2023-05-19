@@ -1,0 +1,34 @@
+﻿@page
+@using LataPrzestepne.Models
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="primary">Kalkulator lat przestępnych</h1>
+    <hr>
+    <span asp-validation-for="HistoryDB.YearOfBirth" style="color: red; font-weight:bold"></span><br>
+    <div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HistoryDB.Name"></label><br>
+                <input asp-for="HistoryDB.Name" id="nameText" /><br>
+                <label asp-for="HistoryDB.YearOfBirth"></label><br>
+                <input asp-for="HistoryDB.YearOfBirth" id="yearText" /><br>
+                <br>
+            </div>
+            <button type="submit" id="btn" class="btn btn-primary">Zatwierdź</button>
+        </form>
+    </div>
+    <br>
+    <div id="dane">
+        @if (Model.HistoryDB != null)
+        {
+            <p>
+                @Model.HistoryDB.YearOfBirth @Model.HistoryDB.Result
+            </p>        
+        }
+    </div>
+</div>

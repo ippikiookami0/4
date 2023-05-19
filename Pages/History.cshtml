@@ -1,0 +1,67 @@
+﻿@page
+@using LataPrzestepne.Models;
+@using System.Security.Claims;
+@model HistoryPageModel;
+
+<div>
+    <form method="get">
+        <label for="search">Search:</label>
+        <input type="text" id="search" name="search">
+        <button type="submit">Search</button>
+    </form>
+</div>
+<br />
+<br />
+<div id="dane">
+    @if (Model.HistoryPages.Items.Count == 0)
+    {
+        <p>No results found.</p>
+    }
+    else
+    {
+        var sortedList = Model.HistoryPages.Items;
+        <table class="table">
+            @foreach (var item in sortedList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.YearOfBirth)
+                    </td>
+                    @if (item.UserId == Model.User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="remid" value="@item.Id" />
+                                <button type="submit" id="btn" class="btn btn-primary">Delete</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+    }
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.HistoryPages.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-page="./History" asp-route-pageIndex=@(Model.HistoryPages.PageIndex - 1)>Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.HistoryPages.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.HistoryPages.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-page="./History" asp-route-pageIndex=@i>@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.HistoryPages.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-page="./History" asp-route-pageIndex=@(Model.HistoryPages.PageIndex + 1)>Next</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
